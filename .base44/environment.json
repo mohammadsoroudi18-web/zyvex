@@ -1,6 +1,37 @@
 {
   "previewPort": 3000,
-  "healthPath": "/",
+  "healthPath": "/api/health",
   "startCommand": "docker compose -f docker-compose.base44.yml up -d",
-  "secrets": []
+  "secrets": [
+    {
+      "name": "ANTHROPIC_API_KEY",
+      "description": "Anthropic API key (console.anthropic.com). Enables the Anthropic provider for chat, Enhance Prompt, planning and file generation.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "OPENAI_API_KEY",
+      "description": "OpenAI API key (platform.openai.com). Enables the OpenAI provider.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "OPENROUTER_API_KEY",
+      "description": "OpenRouter API key (openrouter.ai/keys). Enables the OpenRouter provider.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "OPENAI_COMPATIBLE_API_KEY",
+      "description": "API key for a self-hosted OpenAI-compatible endpoint (optional).",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "OPENAI_COMPATIBLE_BASE_URL",
+      "description": "Base URL of a self-hosted OpenAI-compatible endpoint, e.g. https://my-endpoint/v1 (optional).",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "OLLAMA_BASE_URL",
+      "description": "Base URL of a reachable Ollama instance, e.g. http://host.docker.internal:11434 (optional; no key required).",
+      "requiredAtBoot": false
+    }
+  ]
 }

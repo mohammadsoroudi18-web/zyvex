@@ -4,13 +4,25 @@ services:
     working_dir: /app
     volumes:
       - .:/app
+      - nexora-data:/app/data
     ports:
       - "3000:3000"
-    command: ["python3", "app.py"]
+      - "4100-4103:4100-4103"
+    env_file:
+      - /run/base44/app.env
+    environment:
+      - NEXORA_DB_PATH=/app/data/nexora.db
+      - NEXORA_PREVIEW_PORT_START=4100
+      - NEXORA_PREVIEW_PORT_END=4103
+      - BASE44_PUBLIC_HOST_SUFFIX=${BASE44_PUBLIC_HOST_SUFFIX:-}
+    command: ["sh", "-ec", "pip install --no-cache-dir -q -r requirements.txt && exec uvicorn backend.main:app --host 0.0.0.0 --port 3000 --reload"]
     restart: on-failure
     healthcheck:
-      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3000/')"]
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3000/api/health')"]
       interval: 10s
       timeout: 5s
-      retries: 3
-      start_period: 5s
+      retries: 6
+      start_period: 30s
+
+volumes:
+  nexora-data:
